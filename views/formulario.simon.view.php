@@ -35,7 +35,17 @@
                 <form action="./?sec=formulario.simon" method="post">
                     <!--<form method="get">-->
                     <input type="hidden" name="sec" value="formulario" />
-                   
+                   <?PHP
+                        if(isset($data['resultado'])){
+                            ?>
+                    <table class='table-bordered table'>
+                       <?PHP
+                            echo $data['resultado'];
+                            ?>
+                    </table>
+                    <?PHP
+                        }
+                   ?>
                     <div class="mb-3">
                         <label for="exampleFormControlTextarea1">Introduzca texto</label>
                         <textarea class="form-control" id="exampleFormControlTextarea1" name="textarea" rows="3"><?php echo isset($data['sanitized_post']['textarea']) ? $data['sanitized_post']['textarea'] : ''; ?></textarea>

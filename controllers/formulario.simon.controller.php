@@ -5,14 +5,9 @@ $data["div_titulo"] = "Formulario";
 
 $_customJs = array("vendor/summernote/summernote-bs4.min.js", "assets/pages/js/formulario.view.js");
 
-//Por comodidad creamos arrays para las variables que se pueden recibir por post y son arrays
-$data[S_POST]['selectmultiple'] = array();
-$data[S_POST]['opcions'] = array();
-
 //Comprobamos si se ha enviado el formulario y si es así, lo procesamos
 if(isset($_POST['submit'])){
     $array = json_decode($_POST['textarea']);
-    $resultado=array();
     foreach ($array as $materia => $valor){
         foreach ($valor as $alumno => $notas){
             $media=0;
@@ -24,10 +19,13 @@ if(isset($_POST['submit'])){
             $resultado[$materia][$alumno]= round(($media/$contador) , 2);
         }
     }
-    var_dump($resultado=arrayFinal($resultado));
+    $_resultado=arrayFinal($resultado);
+    $data['resultado']=creacionTabla($_resultado);
+    var_dump($data['resultado']);
 }
 
 function arrayFinal($resultado){
+    $_resultado=array();
     foreach ($resultado as $materia => $alumnos){
         $media=0;
         $suspenso=0;
@@ -37,7 +35,6 @@ function arrayFinal($resultado){
         $minima=10;
         $alumnoMax="";
         $maxima=0;
-        $_resultado[]=$materia;
         
         foreach ($resultado[$materia] as $alumno => $nota){
             $media+= $nota;
@@ -70,6 +67,32 @@ function arrayFinal($resultado){
     }
     
     return $_resultado;
+}
+
+function creacionTabla($resultado) {
+    $tabla="<tr><th></th>";
+    foreach ($resultado as $materia => $alumnos){
+        foreach ($resultado[$materia] as $aux => $rando){
+                $tabla.="<th>".$aux."</th>";
+        }
+        break;
+    }
+    $tabla.="</tr>";
+    foreach ($resultado as $materia => $alumnos) {
+        $tabla.="<tr><td>".$materia."</td>";
+        
+         foreach ($resultado[$materia] as $aux => $rando){
+             
+             if($aux=="min" || $aux=="max"){
+                 $tabla.="<td>".$resultado[$materia][$aux]['alumno'] . " : " . $resultado[$materia][$aux]['nota'] ."</td>";
+             }else{
+                $tabla.="<td>".$rando."</td>";
+             }
+        }
+        
+        $tabla.="</tr>";
+    }
+    return $tabla;
 }
 
 include 'views/templates/header.php';
