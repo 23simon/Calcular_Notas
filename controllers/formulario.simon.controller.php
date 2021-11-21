@@ -21,7 +21,11 @@ if(isset($_POST['submit'])){
     }
     $_resultado=arrayFinal($resultado);
     $data['resultado']=creacionTabla($_resultado);
-    var_dump($data['resultado']);
+    $arrayAux=(promos($resultado));
+    $data['todoAp']=$arrayAux["todoAp"];
+    $data['suspensos']=$arrayAux["suspensos"];
+    $data['promo']=$arrayAux["promo"];
+    $data['noPromo']=$arrayAux["noPromo"];
 }
 
 function arrayFinal($resultado){
@@ -93,6 +97,48 @@ function creacionTabla($resultado) {
         $tabla.="</tr>";
     }
     return $tabla;
+}
+
+function promos($resultado){
+    
+    foreach ($resultado as $materia => $value){
+        foreach ($resultado[$materia] as $key => $nota) {
+            $guardadoAlumnos[$key]=[];
+        }
+    }
+    
+    foreach ($resultado as $materia => $value) {
+        foreach ($resultado[$materia] as $key => $nota) {
+            
+            if($nota<5){
+                array_push($guardadoAlumnos[$key] , 1);
+            }
+        }
+    }
+    
+    $todoAp="";
+    $suspensos="";
+    $promo="";
+    $noPromo="";
+    
+    foreach ($guardadoAlumnos as $key => $value) {
+        if(count($guardadoAlumnos[$key])<1){
+            $todoAp.="[" .$key. "]";
+        }elseif(count($guardadoAlumnos[$key])>0){
+            $suspensos.="[" .$key. "]";
+        }
+        if(count($guardadoAlumnos[$key])<2){
+            $promo.="[" .$key. "]";
+        }elseif(count($guardadoAlumnos[$key])>1){
+            $noPromo.="[" .$key . "]";
+        }
+    }
+    $arrayAux["todoAp"]=$todoAp;
+    $arrayAux["suspensos"]=$suspensos;
+    $arrayAux["promo"]=$promo;
+    $arrayAux["noPromo"]=$noPromo;
+    return $arrayAux;
+    
 }
 
 include 'views/templates/header.php';

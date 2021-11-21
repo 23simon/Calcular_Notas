@@ -54,6 +54,39 @@
                     <div class="mb-3">
                         <input type="submit" value="Enviar" name="submit" class="btn btn-primary"/>
                     </div>
+                    
+                    <div class="card-body">
+                        <?PHP 
+                        if(isset($data['todoAp'])){
+                        ?>
+                            <div style="color: blue; background: #007bff;">
+                            <?PHP echo $data['todoAp']?>
+                            </div>
+                            <?PHP 
+                        }
+                        if(isset($data['suspensos'])){
+                        ?>
+                            <div style="color: goldenrod; background: yellow;">
+                            <?PHP echo $data['suspensos'] ?>
+                            </div>
+                        <?PHP 
+                        } 
+                        if(isset($data['promo'])){
+                        ?>
+                            <div style="color: green; background: greenyellow;">
+                            <?PHP echo $data['promo']?>
+                            </div>
+                        <?PHP
+                        }
+                        if(isset($data['noPromo'])){
+                        ?>
+                            <div style="color: red; background: #f54747;">
+                            <?PHP echo $data['noPromo']?>
+                            </div>
+                        <?PHP
+                        }
+                        ?>
+                    </div>
                 </form>
             </div>
         </div>
